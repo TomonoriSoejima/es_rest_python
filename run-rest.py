@@ -2,13 +2,18 @@
 import yaml
 import requests
 import os
+import datetime
+import tarfile
 
 address = "http://localhost:9200"
+now = datetime.datetime.now()
+folder_name = (now.strftime("%Y%m%d-%H%M%S"))
 # read this yml
 # todo
 # read it from the web if you have access to internet.
 # https://github.com/elastic/support-diagnostics/blob/7.1.5/src/main/resources/elastic-rest.yml
 with open('/Users/surfer/elastic/source/es_rest_python/elastic-rest.yml') as file:
+
     obj = yaml.safe_load(file)
     for k, v in obj.items():
         # print (k, v)
@@ -27,7 +32,8 @@ with open('/Users/surfer/elastic/source/es_rest_python/elastic-rest.yml') as fil
                 # create cat directory
                 if 'subdir' in v.keys():
                     try:
-                        os.makedirs("output/" + v['subdir'])
+
+                        os.makedirs(folder_name + "/" + v['subdir'])
                     except OSError as error:
                         pass
 
@@ -38,9 +44,9 @@ with open('/Users/surfer/elastic/source/es_rest_python/elastic-rest.yml') as fil
                     list_of_dict_values[-1]
 
                     if 'subdir' in v.keys():
-                        path = "output/" + v['subdir'] + "/" + filename
+                        path = folder_name + "/" + v['subdir'] + "/" + filename
                     else:
-                        path = "output/" + filename
+                        path = folder_name + "/" + filename
 
                     # print("echo " + '"' + address + list_of_dict_values[-1] + '"')
 
@@ -50,5 +56,10 @@ with open('/Users/surfer/elastic/source/es_rest_python/elastic-rest.yml') as fil
                         f.write(response.text)
 
 
+
 # todo
 # make a tarball on output directory
+archive_name = folder_name + ".tar.gz"
+tar = tarfile.open(archive_name, "w:gz")
+tar.add(folder_name)
+tar.close()
