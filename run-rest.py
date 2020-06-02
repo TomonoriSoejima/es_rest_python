@@ -5,6 +5,8 @@ import os
 
 address = "http://localhost:9200"
 # read this yml
+# todo
+# read it from the web if you have access to internet.
 # https://github.com/elastic/support-diagnostics/blob/7.1.5/src/main/resources/elastic-rest.yml
 with open('/Users/surfer/elastic/source/es_rest_python/elastic-rest.yml') as file:
     obj = yaml.safe_load(file)
@@ -47,3 +49,6 @@ with open('/Users/surfer/elastic/source/es_rest_python/elastic-rest.yml') as fil
                     with open(path, 'w') as f:
                         f.write(response.text)
 
+
+# todo
+# make a tarball on output directory
