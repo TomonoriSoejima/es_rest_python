@@ -5,11 +5,15 @@ import os
 import datetime
 import tarfile
 
+
+# replace here
 address = "http://localhost:9200"
-now = datetime.datetime.now()
-folder_name = (now.strftime("%Y%m%d-%H%M%S"))
 user = "elastic"
 password = "changeme"
+
+now = datetime.datetime.now()
+folder_name = (now.strftime("%Y%m%d-%H%M%S"))
+
 
 # read this yml
 # todo
