@@ -8,6 +8,9 @@ import tarfile
 address = "http://localhost:9200"
 now = datetime.datetime.now()
 folder_name = (now.strftime("%Y%m%d-%H%M%S"))
+user = "elastic"
+password = "changeme"
+
 # read this yml
 # todo
 # read it from the web if you have access to internet.
@@ -16,12 +19,10 @@ with open('/Users/surfer/elastic/source/es_rest_python/elastic-rest.yml') as fil
 
     obj = yaml.safe_load(file)
     for k, v in obj.items():
-        # print (k, v)
 
-        # check if file extension will be txt or json
         extension = ".json"
 
-        if 'extension' in v.keys() and  v['extension'] == '.txt':
+        if 'extension' in v.keys() and v['extension'] == '.txt':
             extension = ".txt"
 
         # create file name
@@ -39,7 +40,7 @@ with open('/Users/surfer/elastic/source/es_rest_python/elastic-rest.yml') as fil
 
                 if k2 == "versions":
                     list_of_dict_values = list(v2.values())
-                    response = requests.get(address + list_of_dict_values[-1])
+                    response = requests.get(address + list_of_dict_values[-1], auth=(user, password))
                     # print(address + list_of_dict_values[-1])
                     list_of_dict_values[-1]
 
@@ -49,17 +50,15 @@ with open('/Users/surfer/elastic/source/es_rest_python/elastic-rest.yml') as fil
                         path = folder_name + "/" + filename
 
                     # print("echo " + '"' + address + list_of_dict_values[-1] + '"')
-
                     # print("curl " + '"' + address + list_of_dict_values[-1] + '"' + " -o " + path)
 
                     with open(path, 'w') as f:
                         f.write(response.text)
 
-
-
-# todo
-# make a tarball on output directory
-archive_name = folder_name + ".tar.gz"
-tar = tarfile.open(archive_name, "w:gz")
-tar.add(folder_name)
-tar.close()
+try:
+    archive_name = folder_name + ".tar.gz"
+    tar = tarfile.open(archive_name, "w:gz")
+    tar.add(folder_name)
+    tar.close()
+except IOError as error:
+    pass
