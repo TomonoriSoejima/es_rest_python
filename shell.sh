@@ -1,6 +1,6 @@
 echo making directory
-
 mkdir -p output/{cat,commercial}
+
 #echo "http://localhost:9200/_cat/aliases?v"
 curl -silent  "http://localhost:9200/_cat/aliases?v" -o output/cat/cat_aliases.txt
 #echo "http://localhost:9200/_cat/allocation?v"
